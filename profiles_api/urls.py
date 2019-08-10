@@ -9,6 +9,8 @@ router = DefaultRouter()
 router.register('hello-viewset', views.HelloViewSet, base_name='hello-viewset')
 #Apartado 10.46
 router.register('profile', views.UserProfileViewSet)
+#Apartado 12.61
+router.register('feed', views.UserProfileFeedViewSet)
 
 #Apartado 9.39
 urlpatterns = [

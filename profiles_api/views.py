@@ -17,6 +17,10 @@ from rest_framework import filters
 #Apartado 11.53
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.settings import api_settings
+#Apartado 12.63
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
+#Apartado 12.65
+from rest_framework.permissions import IsAuthenticated
 
 #Apartado 8.29
 class HelloApiView(APIView):
@@ -133,6 +137,28 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     search_fields = ('name', 'email',)
 
 
+#Apartado 10.53
 class UserLoginApiView(ObtainAuthToken):
     """Handle creating user authentication tokens"""
     renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES
+
+
+
+#Apartado 12.61
+class UserProfileFeedViewSet(viewsets.ModelViewSet):
+    """Handles creating, reading and updating profile feed items"""
+    authentication_classes = (TokenAuthentication,)
+    serializer_class = serializers.ProfileFeedItemSerializer
+    queryset = models.ProfileFeedItem.objects.all()
+    #Apartado 12.63
+    permission_classes = (
+        permissions.UpdateOwnStatus,
+        IsAuthenticatedOrReadOnly
+        #Apartado 12.65 sustituir lo anterior por. De esta forma solo pueden
+        #leer los estados, usuarios autenticados.
+        #IsAuthenticated
+    )
+
+    def perform_create(self, serializer):
+        """Sets the user profile to the logged in user"""
+        serializer.save(user_profile=self.request.user)
