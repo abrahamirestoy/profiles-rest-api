@@ -12,6 +12,8 @@ from profiles_api import models
 #Apartado 10.49
 from rest_framework.authentication import TokenAuthentication
 from profiles_api import permissions
+#Apartado 10.51, funcionalidad de rest_framework que permite anyadir filtros
+from rest_framework import filters
 
 #Apartado 8.29
 class HelloApiView(APIView):
@@ -119,6 +121,10 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     """Handle creating and updating profiles"""
     serializer_class = serializers.UserProfileSerializer
     queryset = models.UserProfile.objects.all()
-    #Apartado 10.49
+    #Apartado 10.49 Variables de rest_framework que permiten comprobar el autenticado
     authentication_classes = (TokenAuthentication,)
     permission_classes = (permissions.UpdateOwnProfile,)
+    #Apartado 10.51 Variables de rest_framework que permiten realizar la busqueda
+    #por name y email.
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('name', 'email',)
