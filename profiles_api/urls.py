@@ -10,8 +10,11 @@ router.register('hello-viewset', views.HelloViewSet, base_name='hello-viewset')
 #Apartado 10.46
 router.register('profile', views.UserProfileViewSet)
 
+#Apartado 9.39
 urlpatterns = [
     path('hello-view/', views.HelloApiView.as_view()),
+    #Apartado 11.53
+    path('login/', views.UserLoginApiView.as_view()),
     #Apartado 9.39
     path('', include(router.urls)),
 ]
