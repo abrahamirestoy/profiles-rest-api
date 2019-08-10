@@ -7,6 +7,11 @@ from rest_framework import status
 from profiles_api import serializers
 #Apartado 9.38
 from rest_framework import viewsets
+#Apartado 10.45
+from profiles_api import models
+#Apartado 10.49
+from rest_framework.authentication import TokenAuthentication
+from profiles_api import permissions
 
 #Apartado 8.29
 class HelloApiView(APIView):
@@ -107,3 +112,13 @@ class HelloViewSet(viewsets.ViewSet):
         """Handle removing an object"""
 
         return Response({'http_method': 'DELETE'})
+
+
+#Apartado 10.45
+class UserProfileViewSet(viewsets.ModelViewSet):
+    """Handle creating and updating profiles"""
+    serializer_class = serializers.UserProfileSerializer
+    queryset = models.UserProfile.objects.all()
+    #Apartado 10.49
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (permissions.UpdateOwnProfile,)
